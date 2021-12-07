@@ -8,11 +8,13 @@ import java.util.Objects;
  * Created by pjvilloud on 21/09/17.
  */
 public abstract class Employe {
-    private String nom;
-    private String prenom;
-    private String matricule;
-    private LocalDate dateEmbauche;
+    protected String nom;
+    protected String prenom;
+    protected String matricule;
+    protected LocalDate dateEmbauche;
     protected Double salaire;
+    protected Boolean tempsPartiel;
+    protected String sexe;
 
     public Employe() {
     }
@@ -23,6 +25,16 @@ public abstract class Employe {
         this.matricule = matricule;
         this.dateEmbauche = dateEmbauche;
         this.salaire = salaire;
+    }
+
+    public Employe(String nom, String prenom, String matricule, LocalDate dateEmbauche, Double salaire, Boolean tempsPartiel, String sexe) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.matricule = matricule;
+        this.dateEmbauche = dateEmbauche;
+        this.salaire = salaire;
+        this.tempsPartiel = tempsPartiel;
+        this.sexe = sexe;
     }
 
     public String getNom() {
@@ -65,6 +77,25 @@ public abstract class Employe {
         }
     }
 
+    public boolean isTempsPartiel() {
+        return tempsPartiel;
+    }
+
+    public void setTempsPartiel(boolean tempsPartiel) {
+        this.tempsPartiel = tempsPartiel;
+    }
+
+    public String getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(String sexe) throws Exception {
+        if(sexe != "Homme" && sexe != "Femme")
+            throw new Exception("L'attribut sexe de la classe employé ne peut prendre que les valeurs \"Homme\" ou \"Femme\"");
+        else
+            this.sexe = sexe;
+    }
+
     public Double getSalaire() {
         return salaire;
     }
@@ -91,7 +122,7 @@ public abstract class Employe {
     //"Employe{nom='nom', prenom='prenom', matricule='12345', dateEmbauche=1970-01-01, salaire=500.0}"
     @Override
     public String toString() {
-        return "Employe{nom='"+this.nom+"', prenom='"+this.prenom+"', matricule='"+this.matricule+"', dateEmbauche="+this.getDateEmbauche()+", salaire="+this.salaire+"}";
+        return "Employe{nom='"+this.nom+"', prenom='"+this.prenom+"', matricule='"+this.matricule+"', dateEmbauche="+this.getDateEmbauche()+", salaire="+this.salaire+", tempsPartiel="+this.tempsPartiel+", sexe='"+this.sexe+"'}";
     }
 
     @Override
@@ -169,19 +200,37 @@ public abstract class Employe {
         if(!(this.getDateEmbauche().equals(e.getDateEmbauche()))) {
             return false;
         }
+
+        if(this.getSexe() == null && e.getSexe() != null)
+            return false;
+
+        if(this.getSexe() != null && e.getSexe() == null)
+            return false;
+
+        if(this.getSexe() == null && e.getSexe() == null)
+            return false;
+
+        if(!(this.getSexe().equals(e.getSexe()))) {
+            return false;
+        }
+
+        if(!(this.isTempsPartiel() == e.isTempsPartiel())) {
+            return false;
+        }
+        
         return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nom, prenom, matricule, dateEmbauche, salaire);
+        return Objects.hash(nom, prenom, matricule, dateEmbauche, salaire, tempsPartiel, sexe);
     }
 
     public void augmenterSalaire(Double coefficient_augmentation) {
         this.setSalaire(this.getSalaire() + this.getSalaire() * coefficient_augmentation);
     }
 
-    public abstract Double getPrimeAnnuelle() throws Exception; /*{
+    public Double getPrimeAnnuelle() throws Exception {
         return Entreprise.primeAnnuelleBase();
-    }*/
+    }
 }

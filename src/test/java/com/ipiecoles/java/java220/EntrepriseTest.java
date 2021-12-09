@@ -116,7 +116,7 @@ public class EntrepriseTest {
 	class Derived extends Employe {
 		//A decommenter quand le constructeur avec les 5 arguments est codé
 		public Derived(String nom, String prenom, String matricule, LocalDate dateEmbauche, Double salaire) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-			//super(nom, prenom, matricule, dateEmbauche, salaire);
+			super(nom, prenom, matricule, dateEmbauche, salaire);
 		}
 
 		public Derived() {
@@ -464,7 +464,7 @@ public class EntrepriseTest {
 		Assertions.assertThat(TestUtils.invokeGetter(d, "grade")).isEqualTo(2);
 	}
 
-	/*@Test
+	@Test
 	public void exo304SetGrade() throws Exception {
 		//Modifier le setter de l'attribut grade pour qu'il lève une exception de la classe TechnicienException (à créer)
 		//et dont le message est :
@@ -499,7 +499,7 @@ public class EntrepriseTest {
 		catch(Exception technicienException){
 			Assertions.fail("La méthode setGrade ne devrait pas renvoyer d'exceptions avec la valeur 3");
 		}
-	}*/
+	}
 
 	@Test
 	public void exo304SetSalaire() throws Exception {
@@ -808,7 +808,7 @@ public class EntrepriseTest {
 		Object t = TestUtils.getClasse("Technicien").getConstructor(String.class, String.class, String.class, LocalDate.class, Double.class, Integer.class).newInstance("nom", "prenom", "matricule", dateTime, 500.0, 1);
 		Object t2 = TestUtils.getClasse("Technicien").getConstructor(String.class, String.class, String.class, LocalDate.class, Double.class, Integer.class).newInstance("nom", "prenom", "matricule", dateTime, 500.0, 2);
 
-		Object d = TestUtils.getClasse("Manager").newInstance();
+		Object d = TestUtils.getClasse("Manager").getDeclaredConstructor().newInstance();
 		TestUtils.callMethod(d, "ajoutTechnicienEquipe", t3);
 		TestUtils.callMethod(d, "ajoutTechnicienEquipe", t);
 		TestUtils.callMethod(d, "ajoutTechnicienEquipe", t2);
